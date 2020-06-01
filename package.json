@@ -1,0 +1,11 @@
+{
+  "name": "eventbus",
+  "version": "0.1.0",
+  "description": "Simple eventbus library ",
+  "main": "./src/EventBus.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Harshal Lele",
+  "license": "MIT"
+}
