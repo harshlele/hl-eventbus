@@ -4,8 +4,11 @@
   "description": "Simple eventbus library ",
   "main": "./src/EventBus.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "Harshal Lele",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^26.0.1"
+  }
 }
