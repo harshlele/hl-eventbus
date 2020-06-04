@@ -4,14 +4,16 @@ const bus = {};
 module.exports = {
     /**
      * @param {string} event - event name
-     * @param  {...any} args - variable number of arguments that you want to pass to the subscribing method
+     * @param  {...any} args - variable number of arguments that you want to pass to the subscribing function
      */
     publish: function(event, ...args){
         if(bus[event]){
-            Object.values(bus[event]).forEach(callback => {
-                callback.method(...args);
-                if(callback.once){
-                    this.unsubscribe(event,callback.id);
+            Object.values(bus[event]).forEach(subscriber => {
+                if(!subscriber.scope) subscriber.method(...args);
+                else subscriber.method.call(subscriber.scope,...args);
+
+                if(subscriber.once){
+                    this.unsubscribe(event,subscriber.id);
                 }
             });
         }
@@ -20,11 +22,12 @@ module.exports = {
 
     /**
      * @param {string} event - event name
-     * @param {Function} callback - method to run when event is fired
-     * @param {boolean} once - if true, method will be run only for the first publish
+     * @param {Function} callback - function to run when event is fired
+     * @param {boolean} once - if true, function will be run only for the first publish
+     * @param {Object} scope - custom scope that the callback function 
      * @returns {Number} id - the id of the subscription. used for unsubscribing
      */
-    subscribe: function(event,callback,once = false){
+    subscribe: function(event,callback,scope=null,once = false){
         if(!callback) return;
         
         if(!bus[event]){
@@ -34,6 +37,7 @@ module.exports = {
         bus[event][id] = {
             id:id,
             method:callback,
+            scope:scope,
             once:once
         };
 
@@ -49,7 +53,7 @@ module.exports = {
 
     /** 
      * @param {string} event - event name
-     * @param {Number} id - id of the method that you want to remove
+     * @param {Number} id - id of the function that you want to remove
      */
     unsubscribe: function(event,id){
         for (const key in bus[event]){
@@ -72,13 +76,13 @@ module.exports = {
      * @param {Function} callback - function that will be run when passed in event is published
      * @returns {Number} id - the id of the subscription
      */
-    subOnce: function(event,callback){
-        return this.subscribe(event,callback,true);
+    subOnce: function(event,callback,scope=null){
+        return this.subscribe(event,callback,scope,true);
     },
 
     /**
      * @param {string} event - event name
-     * @param  {...any} args - variable number of arguments that you want to pass to the subscribing method
+     * @param  {...any} args - variable number of arguments that you want to pass to the subscribing function
      */
     pubSticky: function(event,...args){
         if(!bus.sticky) bus.sticky = {};
