@@ -1,4 +1,3 @@
-//object where all subscribers are stored
 const bus = {};
 
 module.exports = {

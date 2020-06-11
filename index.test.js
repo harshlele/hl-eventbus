@@ -1,7 +1,11 @@
+let eventbus;
+
+beforeEach(() => {
+    eventbus = require('./src/index.js');
+});
 
 test('basic publish/subscribe',() => {
 
-    const eventbus = require("./src/index.js");
     let publishedMsg = "";
 
     eventbus.subscribe("event1",(msg) => {
@@ -12,11 +16,8 @@ test('basic publish/subscribe',() => {
     expect(publishedMsg).toEqual("published message");
 });
 
-
-
 test('subscribe once', () => {
 
-    const eventbus = require("./src/index.js");
     let subOnce = 0;
 
     eventbus.subOnce("event2",(msg) => {
@@ -32,7 +33,6 @@ test('subscribe once', () => {
 
 test('publish/subscribe with custom scope',() => {
 
-    const eventbus = require("./src/index.js");
     let pubScope = 0;
 
     eventbus.subscribe("event3",function(b){
@@ -48,7 +48,6 @@ test('publish/subscribe with custom scope',() => {
 
 test('publish sticky, then subscribe',() => {
 
-    const eventbus = require("./src/index.js");
     let publishSticky = 0;
 
     eventbus.pubSticky("event4",10,20,30);
