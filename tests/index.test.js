@@ -1,19 +1,27 @@
 let eventbus;
+let publisher;
 
 beforeEach(() => {
-    eventbus = require('./src/index.js');
+    eventbus = require('../src/index.js');
+    publisher = require("./publisher.js");
 });
 
-test('basic publish/subscribe',() => {
+describe('basic publish/subscribe',() => {
 
     let publishedMsg = "";
 
-    eventbus.subscribe("event1",(msg) => {
-        publishedMsg = msg;
+    test('subscribe',() => {
+        eventbus.subscribe("event1",(msg) => {
+            publishedMsg = msg;
+        });
+        expect(publishedMsg).toEqual("");
     });
-    eventbus.publish("event1","published message");
 
-    expect(publishedMsg).toEqual("published message");
+    test('publish',() => {
+        publisher.publishTestMessage("event1","Test Message");
+        expect(publishedMsg).toEqual("Test Message");
+    });
+    
 });
 
 test('subscribe once', () => {
@@ -23,8 +31,8 @@ test('subscribe once', () => {
     eventbus.subOnce("event2",(msg) => {
         subOnce+=msg;
     });
-    eventbus.publish("event2",1);
-    eventbus.publish("event2",1);
+    publisher.publishTestMessage("event2",1);
+    publisher.publishTestMessage("event2",1);
 
     expect(subOnce).toEqual(1);
 });
@@ -39,7 +47,7 @@ test('publish/subscribe with custom scope',() => {
         pubScope += this.a + b;
     },{a:10});
 
-    eventbus.publish("event3",20);
+    publisher.publishTestMessage("event3",20);
 
     expect(pubScope).toEqual(30);
 });

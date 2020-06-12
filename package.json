@@ -4,7 +4,7 @@
   "description": "Simple eventbus library ",
   "main": "./src/EventBus.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest tests/*"
   },
   "author": "Harshal Lele",
   "license": "MIT",
