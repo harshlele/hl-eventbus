@@ -39,13 +39,15 @@ test('subscribe once', () => {
 
 
 
-test('publish/subscribe with custom scope',() => {
+test('publish/subscribe with custom scope',function(){
 
-    let pubScope = 0;
+    let pubScope = 0;    
+
+    this.a = 10;
 
     eventbus.subscribe("event3",function(b){
         pubScope += this.a + b;
-    },{a:10});
+    },this);
 
     publisher.publishTestMessage("event3",20);
 
@@ -54,15 +56,17 @@ test('publish/subscribe with custom scope',() => {
 
 
 
-test('publish sticky, then subscribe',() => {
+test('publish sticky, then subscribe',function() {
 
     let publishSticky = 0;
 
     eventbus.pubSticky("event4",10,20,30);
 
+    this.d = 100;
+
     eventbus.subscribe("event4",function(a,b,c){
         publishSticky += a + b + c + this.d; 
-    },{d:100});
+    },this);
 
     expect(publishSticky).toEqual(160);
 });
