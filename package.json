@@ -1,8 +1,8 @@
 {
-  "name": "eventbus",
+  "name": "hl-eventbus",
   "version": "0.1.0",
-  "description": "Simple eventbus library ",
-  "main": "./src/EventBus.js",
+  "description": "Simple eventbus library",
+  "main": "./src/index.js",
   "scripts": {
     "test": "jest tests/*"
   },
